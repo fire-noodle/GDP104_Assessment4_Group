@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     public bool playerIsAlive = true;
     public bool playerCanMove = false;
 
+    public bool isOnPlatform = false;
+    public bool isInPit = false;
+
     public AudioClip jumpSound;
     public AudioClip deathSound;
 
@@ -62,6 +65,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        if (playerIsAlive == true)
+        {
+            if (isInPit == true && isOnPlatform == false)
+            {
+                KillPlayer();
+            }
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (playerIsAlive == true)
@@ -69,6 +83,36 @@ public class Player : MonoBehaviour
             if (collision.transform.GetComponent<Vehicle>() != null)
             {
                 KillPlayer();
+            }
+            else if (collision.transform.GetComponent<Platform>() != null)
+            {
+                transform.SetParent(collision.transform);
+                isOnPlatform = true;
+            }
+            else if (collision.transform.tag == "Pit")
+            {
+                isInPit = true;
+            }
+            else if (collision.transform.tag == "Bonus")
+            {
+                myGameManager.CollectBonus(10, collision.transform.position);
+                Destroy(collision.gameObject);
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (playerIsAlive == true)
+        {
+            if (collision.transform.GetComponent<Platform>() != null)
+            {
+                transform.SetParent(null);
+                isOnPlatform = false;
+            }
+            else if (collision.transform.tag == "Pit")
+            {
+                isInPit = false;
             }
         }
     }
