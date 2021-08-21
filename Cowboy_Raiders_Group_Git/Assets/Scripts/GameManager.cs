@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,6 +25,21 @@ public class GameManager : MonoBehaviour
 
     [Header("Effects")]
     public GameObject bonusFX;
+
+    [Header("UI")]
+    public TMP_Text uiGameOverMessage;
+    public TMP_Text uiScore;
+
+    public UIManager myUI;
+
+    public void Awake()
+    {
+        myUI = FindObjectOfType<UIManager>();
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene(1);
+    }
     void Start()
     {
         UpdateScore(-currentScore);
@@ -45,5 +61,19 @@ public class GameManager : MonoBehaviour
     {
         UpdateScore(amount);
         Instantiate(bonusFX, pos, Quaternion.identity);
+    }
+
+    public void GameOver(bool isWin)
+    {
+        if (isWin == true)
+        {
+            uiGameOverMessage.text = "You Won!";
+        }
+        else
+        {
+            uiGameOverMessage.text = "You Lost!";
+        }
+        myUI.uiGameOverWindow.SetActive(true);
+        uiScore.text = currentScore.ToString();
     }
 }

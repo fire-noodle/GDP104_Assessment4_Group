@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
 
     private GameManager myGameManager;
     private AudioSource myAudioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -119,15 +120,21 @@ public class Player : MonoBehaviour
 
     void KillPlayer()
     {
-        GetComponent<SpriteRenderer>().enabled = false;
+        if (playerIsAlive)
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
 
-        myAudioSource.PlayOneShot(deathSound);
-        Instantiate(explosionFX, transform.position, Quaternion.identity);
+            myAudioSource.PlayOneShot(deathSound);
+            Instantiate(explosionFX, transform.position, Quaternion.identity);
 
-        playerIsAlive = false;
-        playerCanMove = false;
-        
-        print("Dead Cowboy");
+            playerIsAlive = false;
+            playerCanMove = false;
+
+            if (playerIsAlive != true)
+            {
+                myGameManager.GameOver(false);
+            }
+        }
     }
 
 }
