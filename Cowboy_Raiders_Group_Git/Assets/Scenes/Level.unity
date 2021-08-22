@@ -2106,6 +2106,7 @@ MonoBehaviour:
   isInPit: 0
   jumpSound: {fileID: 8300000, guid: 112ac94d1717dfa429e07c3359277370, type: 3}
   deathSound: {fileID: 8300000, guid: fb331bffda7204e42beb5528449f72b4, type: 3}
+  pickupSound: {fileID: 8300000, guid: f3773a968bda56d4391fc2fc6eb31fef, type: 3}
   explosionFX: {fileID: 2531753096209610201, guid: 21eb911a13adb014492f10844a805724, type: 3}
 --- !u!82 &783330150
 AudioSource:

@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
 
     public AudioClip jumpSound;
     public AudioClip deathSound;
+    public AudioClip pickupSound;
 
     public GameObject explosionFX;
 
@@ -98,11 +99,13 @@ public class Player : MonoBehaviour
             {
                 myGameManager.CollectBonus(10, collision.transform.position);
                 Destroy(collision.gameObject);
+                myAudioSource.PlayOneShot(pickupSound);
             }
             else if (collision.transform.tag == "ExtraBonus")
             {
                 myGameManager.CollectBonus(50, collision.transform.position);
                 Destroy(collision.gameObject);
+                myAudioSource.PlayOneShot(pickupSound);
             }
             else if (collision.transform.tag == "Goal")
             {
