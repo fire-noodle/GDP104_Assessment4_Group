@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public int playerLivesRemaining;
 
     public bool playerIsAlive = true;
-    public bool playerCanMove = false;
+    public bool playerCanMove = true;
 
     public bool isOnPlatform = false;
     public bool isInPit = false;
@@ -33,30 +33,30 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerIsAlive == true)
+        if ((playerIsAlive == true) && (playerCanMove == true))
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow) || (Input.GetKeyDown(KeyCode.W) && transform.position.y < myGameManager.levelConstraintTop))
+            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && transform.position.y < myGameManager.levelConstraintTop)
             {
                 transform.Translate(new Vector2(0, 1));
                 myAudioSource.clip = jumpSound;
                 myAudioSource.pitch = 1f;
                 myAudioSource.Play();
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow) || (Input.GetKeyDown(KeyCode.S) && transform.position.y > myGameManager.levelConstraintBottom))
+            else if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && transform.position.y > myGameManager.levelConstraintBottom)
             {
                 transform.Translate(new Vector2(0, -1));
                 myAudioSource.clip = jumpSound;
                 myAudioSource.pitch = 0.7f;
                 myAudioSource.Play();
             }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow) || (Input.GetKeyDown(KeyCode.A) && transform.position.x > myGameManager.levelConstraintLeft))
+            else if ((Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) && transform.position.x > myGameManager.levelConstraintLeft)
             {
                 transform.Translate(new Vector2(-1, 0));
                 myAudioSource.clip = jumpSound;
                 myAudioSource.pitch = 1f;
                 myAudioSource.Play();
             }
-            else if (Input.GetKeyDown(KeyCode.RightArrow) || (Input.GetKeyDown(KeyCode.D) && transform.position.x < myGameManager.levelConstraintRight))
+            else if ((Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) && transform.position.x < myGameManager.levelConstraintRight)
             {
                 transform.Translate(new Vector2(1, 0));
                 myAudioSource.clip = jumpSound;
@@ -98,6 +98,16 @@ public class Player : MonoBehaviour
             {
                 myGameManager.CollectBonus(10, collision.transform.position);
                 Destroy(collision.gameObject);
+            }
+            else if (collision.transform.tag == "ExtraBonus")
+            {
+                myGameManager.CollectBonus(50, collision.transform.position);
+                Destroy(collision.gameObject);
+            }
+            else if (collision.transform.tag == "Goal")
+            {
+                playerCanMove = false;               
+                myGameManager.GameOver(true);                
             }
         }
     }
